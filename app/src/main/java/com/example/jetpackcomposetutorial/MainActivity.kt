@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,22 +27,56 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
 
+private val messages: List<MyMessage> = listOf(
+    MyMessage("Hola Jetpack Compose 1!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 2!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 3!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 4!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 5!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 6!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 7!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 8!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 9!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 10!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 11!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 12!", "Preparado"),
+    MyMessage("Hola Jetpack Compose 13!", "Preparado"),
+
+
+    )
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComposeTutorialTheme() {
-                MyComponent()
+                MyMessages(messages)
             }
         }
     }
 }
 
+data class MyMessage(val title: String, val body: String)
+
 @Composable
-fun MyComponent() {
-    Row(modifier = Modifier.background(MaterialTheme.colorScheme.background).padding(8.dp)) {
+fun MyMessages(messages: List<MyMessage>) {
+    LazyColumn() {
+        items(messages) { message ->
+            MyComponent(message)
+        }
+    }
+
+}
+
+@Composable
+fun MyComponent(message: MyMessage) {
+    Row(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(8.dp)
+    ) {
         MyImage()
-        MyTexts()
+        MyTexts(message)
     }
 }
 
@@ -57,17 +93,17 @@ fun MyImage() {
 }
 
 @Composable
-private fun MyTexts() {
+private fun MyTexts(message: MyMessage) {
     Column(modifier = Modifier.padding(start = 8.dp)) {
 
         MyText(
-            text = "Hola Jetpack Compose!",
+            text = message.title,
             MaterialTheme.colorScheme.primary,
             MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(16.dp))
         MyText(
-            text = "Preparado!!",
+            text = message.body,
             MaterialTheme.colorScheme.onBackground,
             MaterialTheme.typography.labelLarge
         )
@@ -76,15 +112,15 @@ private fun MyTexts() {
 
 @Composable
 fun MyText(text: String, color: Color, style: TextStyle) {
-    Text(text, color=color, style = style)
+    Text(text, color = color, style = style)
 }
 
-@Preview
-@Preview (uiMode = Configuration.UI_MODE_NIGHT_YES )
+@Preview(showSystemUi = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewComponents() {
-    JetpackComposeTutorialTheme() {
-        MyComponent()
+    JetpackComposeTutorialTheme {
+        MyMessages(messages)
     }
 }
 
